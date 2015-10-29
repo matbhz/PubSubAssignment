@@ -28,7 +28,7 @@ Unsubscribes the `:subscriber` from the given `:topic`
 Tries to retrieve a message from the subscribed `:topic` for the given `:subscriber`.
 Multiple calls are necessary to fully consume the subscription list. Returns `404` if all messages have been read or if the `:subscriber` is not subscribed to the given `:topic`.
 
-## How to run the source code:
+## How to run from the source code:
 On the root of the project, where `main.go` is located, run:
 
 $ go run main.go

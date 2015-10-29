@@ -12,21 +12,21 @@
 }
 ```
 
-Publishes a the a `message` to the `topic` request in the URI. 
+Publishes a the a `message` to the `:topic` request in the URI. 
 Notifies *everyone* subscribed to that `topic`.
  
 # POST /api/:topic/:subscriber
 
-Subscribes the `subscriber` to a the given `topic`
+Subscribes the `:subscriber` to a the given `:topic`
 	
 # DELETE /api/:topic/:subscriber 
 
-Unsubscribes the `subscriber` from the given `topic`
+Unsubscribes the `:subscriber` from the given `:topic`
 	
 # GET /api/:topic/:subscriber
 
-Tries to retrieve a message from the subscribed `topic` for the given `subscriber`.
-Multiple calls are necessary to fully consume the subscription list. Returns `404` if all messages have been read or if the `subscriber` is not subscribed to the given `topic`.
+Tries to retrieve a message from the subscribed `:topic` for the given `:subscriber`.
+Multiple calls are necessary to fully consume the subscription list. Returns `404` if all messages have been read or if the `:subscriber` is not subscribed to the given `:topic`.
 
 ## How to run the source code:
 On the root of the project, where `main.go` is located, run:

@@ -36,7 +36,7 @@ func TestPollingForAnExistingTopicWithMessages_ShouldNotReturnNull(t *testing.T)
 	subscriber := Models.NewSubscriber("Test Subscriber")
 
 	subscriber.Subscriptions[TOPIC] = make(chan *Models.Message)
-	go func() { subscriber.Subscriptions[TOPIC] <- &Models.Message{Message: "A message", PublishedAt: time.Now().Format(time.RFC850)} }()
+	go func() { subscriber.Subscriptions[TOPIC] <- &Models.Message{Message: "Das ist ein lied Von Klaus Hoffman", PublishedAt: time.Now().Format(time.RFC850)} }()
 	time.Sleep(2 * time.Second) // TODO: Find better way to wait for blocking channels
 
 	valuePolled := subscriber.Poll(TOPIC)

@@ -7,6 +7,7 @@ import (
 	"log"
 	"github.com/matbhz/CitrixAssignment/Models"
 	"github.com/matbhz/CitrixAssignment/Utils"
+	"time"
 )
 
 const GET    = "GET"
@@ -34,6 +35,7 @@ func main() {
 
 func Publish(response http.ResponseWriter, request *http.Request) {
 	publishedMessage := Utils.ParseMessage(request);
+	publishedMessage.PublishedAt = time.Now().Format(time.RFC3339)
 
 	topic := Utils.GetTopic(request)
 
@@ -87,6 +89,6 @@ func Receive(response http.ResponseWriter, request *http.Request){
 	if (message == nil) {
 		Utils.NotFound(response)
 	} else {
-		Utils.Ok(response)
+		Utils.Ok(message, response)
 	}
 }

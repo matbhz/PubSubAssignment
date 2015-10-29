@@ -1,8 +1,13 @@
 package Utils
-import "net/http"
+import (
+	"net/http"
+	"encoding/json"
+)
 
-func Ok(response http.ResponseWriter) {
+func Ok(message interface{}, response http.ResponseWriter) {
 	response.WriteHeader(200)
+	serializedMessage, _ := json.Marshal(message)  // TODO: Unlikely, but treat error better
+	response.Write([]byte(serializedMessage))
 }
 
 func Created(response http.ResponseWriter) {

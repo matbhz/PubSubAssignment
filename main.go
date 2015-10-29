@@ -64,8 +64,15 @@ func Subscribe(response http.ResponseWriter, request *http.Request){
 	}
 }
 
-func RemoveSubscriber(http.ResponseWriter, *http.Request){
-	fmt.Print("DELETEd RemoveSubscriber")
+func RemoveSubscriber(response http.ResponseWriter, request *http.Request){
+	topic, name := Utils.GetTopicAndSubscriber(request)
+
+	if (Subscribers[name] == nil || !Subscribers[name].HasSubscription(topic)) {
+		Utils.NotFound(response)
+	} else {
+		delete(Subscribers[name].Subscriptions, topic)
+		Utils.NoResponse(response)
+	}
 }
 
 func Receive(response http.ResponseWriter, request *http.Request){

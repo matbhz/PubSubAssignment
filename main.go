@@ -5,11 +5,15 @@ import (
 	"net/http"
 	"fmt"
 	"log"
+	"github.com/matbhz/CitrixAssignment/Models"
+	"github.com/matbhz/CitrixAssignment/Utils"
 )
 
 const GET    = "GET"
 const POST   = "POST"
 const DELETE = "DELETE"
+
+var Subscribers map[string]*Models.Subscriber
 
 func main() {
 	r := mux.NewRouter()
@@ -22,23 +26,60 @@ func main() {
 
 	http.Handle("/", r)
 
-	fmt.Print("Starting server locally on port :8080")
+	Subscribers = make(map[string]*Models.Subscriber)
+
+	fmt.Println("Starting server locally on port :8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
+func Publish(response http.ResponseWriter, request *http.Request) {
+	publishedMessage := Utils.ParseMessage(request);
 
-func Publish(http.ResponseWriter, *http.Request){
-	fmt.Print("POSTed Publish")
+	topic := Utils.GetTopic(request)
+
+	for _, subscriber := range Subscribers {
+		subscriberChannel := subscriber.Subscriptions[topic]
+		if (subscriberChannel != nil){
+			go func() {
+				subscriberChannel <- publishedMessage
+			}()
+		}
+	}
+
+	Utils.NoResponse(response)
 }
 
-func Subscribe(http.ResponseWriter, *http.Request){
-	fmt.Print("POSTed Subscribe")
+func Subscribe(response http.ResponseWriter, request *http.Request){
+	topic, name := Utils.GetTopicAndSubscriber(request)
+
+	if (Subscribers[name] == nil) {
+		Subscribers[name] = Models.NewSubscriber(name)
+	}
+
+	if (Subscribers[name].HasSubscription(topic)) {
+		Utils.BadRequest("Already subscribed to this topic", response)
+	} else {
+		Subscribers[name].Subscriptions[topic] = make(chan *Models.Message)
+		Utils.Created(response)
+	}
 }
 
 func RemoveSubscriber(http.ResponseWriter, *http.Request){
 	fmt.Print("DELETEd RemoveSubscriber")
 }
 
-func Receive(http.ResponseWriter, *http.Request){
-	fmt.Print("GET Receive")
+func Receive(response http.ResponseWriter, request *http.Request){
+	topic, name := Utils.GetTopicAndSubscriber(request)
+
+	if (Subscribers[name] == nil || !Subscribers[name].HasSubscription(topic)) {
+		Utils.NotFound(response)
+	}
+
+	message := Subscribers[name].Poll(topic)
+
+	if (message == nil) {
+		Utils.NotFound(response)
+	}
+
+	Utils.Ok(response)
 }

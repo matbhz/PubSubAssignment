@@ -86,7 +86,7 @@ func Receive(response http.ResponseWriter, request *http.Request){
 
 	if (message == nil) {
 		Utils.NotFound(response)
+	} else {
+		Utils.Ok(response)
 	}
-
-	Utils.Ok(response)
 }

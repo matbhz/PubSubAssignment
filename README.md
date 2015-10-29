@@ -12,12 +12,13 @@
 }
 ```
 
-Publishes a the a `message` to the `:topic` request in the URI. 
+Publishes a the a `message` to the `:topic` requested in the URI. 
 Notifies *everyone* subscribed to that `topic`.
  
 # POST /api/:topic/:subscriber
 
 Subscribes the `:subscriber` to a the given `:topic`
+Messages published before the `:subscriber` has subscribed for that `:topic` will *not* be delivered.
 	
 # DELETE /api/:topic/:subscriber 
 

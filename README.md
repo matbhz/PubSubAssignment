@@ -61,6 +61,15 @@ Multiple calls are necessary to fully consume the subscription list.
 
 Returns `404` if all messages have been read or if the `:subscriber` is not subscribed to the given `:topic`.
 
+## Sample response payload:
+```
+#!json
+{
+   "message" : "Luke, I am your father"
+   "publishedAt": "1980-10-29T20:41:31-07:00"
+
+}
+```
 ## Possible responses
 
 * ### 200

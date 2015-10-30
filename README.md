@@ -1,7 +1,5 @@
 # PubSub Assignment
 
-## Endpoints:
-
 # POST /api/:topic 
 
 ### Accepts: 

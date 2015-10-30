@@ -3,26 +3,53 @@ package Tests
 import (
 	"testing"
 	"net/http"
-	"fmt"
-	"net/url"
 	"net/http/httptest"
 	"github.com/matbhz/CitrixAssignment/Controllers"
-	"github.com/matbhz/CitrixAssignment/Utils"
+	"log"
 )
 
-func TestGetTopic_ShouldReturnTheTopic(t *testing.T){
+const TOPIC = "news"
+const SUBSCRIBER = "Sub1"
+
+func TestWhenSubscriberHasNoTopicsAndTriesToGetATopic_ShouldReturn404(t *testing.T){
+	// Setup endpoints with real Controller routes for simplicity
+	Controllers.StartSubscribers()
 	r := Controllers.DefineRoutes()
 	http.Handle("/", r)
-
 	server := httptest.NewServer(r)
 	defer server.Close()
 
-	x := &http.Request{
-		URL: &url.URL{Path:"/api/A_COOL_TOPIC/something/els"},
-		RequestURI:"/api/A_COOL_TOPIC/something/else"}
+	res, err := http.Get(server.URL+"/api/"+TOPIC+"/"+SUBSCRIBER)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	result := Utils.GetTopic(x)
+	if (res.StatusCode != 404) {
+		t.Error()
+	}
+}
 
-	fmt.Println(result)
+func TestWhenSubscriberHasTopicsAndTriesToGetATopic_ShouldReturn200(t *testing.T){
+	// Setup endpoints with real Controller routes for simplicity
+	Controllers.StartSubscribers()
+	r := Controllers.DefineRoutes()
+	http.Handle("/", r)
+	server := httptest.NewServer(r)
+	defer server.Close()
+}
+
+func TestWhenSubscriberHasNoTopicsAndTriesToUnsubscribeFromATopic_ItShouldReturn204() {
+
+}
+
+func TestWhenSubscriberHasTopicsAndTriesToUnsubscribeFromATopic_ItShouldReturn204() {
+
+}
+
+func TestWhenSubscriberTriesSubscribeToATopic_ItShouldReturn201() {
+
+}
+
+func TestWhenPublisherPublishesAMessageInATopic_AllSubscribersShouldReceiveThatMessage() {
 
 }

@@ -14,6 +14,10 @@ const DELETE = "DELETE"
 
 var Subscribers map[string]*Models.Subscriber
 
+func StartSubscribers() {
+	Subscribers = make(map[string]*Models.Subscriber)
+}
+
 func DefineRoutes() *mux.Router{
 	r := mux.NewRouter()
 
@@ -75,6 +79,7 @@ func Receive(response http.ResponseWriter, request *http.Request){
 
 	if (Subscribers[name] == nil || !Subscribers[name].HasSubscription(topic)) {
 		Utils.NotFound(response)
+		return
 	}
 
 	message := Subscribers[name].Poll(topic)

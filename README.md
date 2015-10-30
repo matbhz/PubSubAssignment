@@ -2,7 +2,14 @@
 
 ## Endpoints:
 
-# POST /api/:topic
+# POST /api/:topic 
+
+### Accepts: 
+`Content-type` : `application/json`
+
+### Action
+Publishes a the a `message` to the `:topic` requested in the URI. 
+Notifies *everyone* subscribed to that `topic`.
 
 ## Sample request payload:
 ```
@@ -12,14 +19,25 @@
 }
 ```
 
-Publishes a the a `message` to the `:topic` requested in the URI. 
-Notifies *everyone* subscribed to that `topic`.
- 
+## Possible responses
+
+* ### 204
+Succesfully posted and notified subscribers with a message
+
+* ### 404
+If different, or empty, `Content-type` is requested.
+
 # POST /api/:topic/:subscriber
 
+### Action
 Subscribes the `:subscriber` to a the given `:topic`
 
 Messages published before the `:subscriber` has subscribed for that `:topic` will *not* be delivered.
+
+## Possible responses
+
+* ### 201
+Subscribed to future messages in the `:topic`
 	
 # DELETE /api/:topic/:subscriber 
 

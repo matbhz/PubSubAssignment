@@ -1,5 +1,6 @@
 package Utils
 import (
+	"io"
 	"net/http"
 	"github.com/gorilla/mux"
 	"encoding/json"
@@ -18,10 +19,17 @@ func GetTopicAndSubscriber(request *http.Request) (string, string) {
 
 func ParseMessage(request *http.Request) *Models.Message {
 	decoder := json.NewDecoder(request.Body)
+
+
 	var publishedMessage *Models.Message
 	err := decoder.Decode(&publishedMessage)
-	if err != nil {
-		panic(err)
+
+	switch {
+		case err == io.EOF:
+			return nil
+		case err != nil:
+			panic(err)
 	}
+
 	return publishedMessage
 }

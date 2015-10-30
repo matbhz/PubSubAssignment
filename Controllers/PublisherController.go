@@ -21,17 +21,24 @@ func StartSubscribers() {
 func DefineRoutes() *mux.Router{
 	r := mux.NewRouter()
 
-	r.HandleFunc("/api/{topic}", Publish).Methods(POST)
+	r.HandleFunc("/api/{topic}", Publish).Methods(POST).Headers("Content-Type", "application/json")
 
 	r.HandleFunc("/api/{topic}/{subscriber}", Subscribe).Methods(POST)
 	r.HandleFunc("/api/{topic}/{subscriber}", RemoveSubscriber).Methods(DELETE)
 	r.HandleFunc("/api/{topic}/{subscriber}", Receive).Methods(GET)
+
 
 	return r
 }
 
 func Publish(response http.ResponseWriter, request *http.Request) {
 	publishedMessage := Utils.ParseMessage(request);
+
+	if (publishedMessage == nil) {
+		Utils.BadRequest("Message payload empty", response)
+		return
+	}
+
 	publishedMessage.PublishedAt = time.Now().Format(time.RFC3339)
 
 	topic := Utils.GetTopic(request)

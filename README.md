@@ -41,15 +41,34 @@ Subscribed to future messages in the `:topic`
 	
 # DELETE /api/:topic/:subscriber 
 
+### Action
 Unsubscribes the `:subscriber` from the given `:topic`
+
+## Possible responses
+
+* ### 204
+Unsubscribed to future messages in the `:topic`
+
+* ### 404
+`:topic` not found to be unsubscribed
 	
 # GET /api/:topic/:subscriber
 
+### Action
 Tries to retrieve a message from the subscribed `:topic` for the given `:subscriber`.
 
 Multiple calls are necessary to fully consume the subscription list. 
 
 Returns `404` if all messages have been read or if the `:subscriber` is not subscribed to the given `:topic`.
+
+## Possible responses
+
+* ### 200
+Successfully retrieved a message from `:topic`
+
+* ### 404
+`:topic` not found or no new messages published the `:topic` 
+
 
 ## How to run from the source code:
 On the root of the project, where `main.go` is located, run:

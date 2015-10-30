@@ -7,7 +7,7 @@ import (
 
 func TestPollingForAnNonExistingTopic_ShouldReturnNull(t *testing.T) {
 	const TOPIC = "TestTopic"
-	subscriber := Models.NewSubscriber("Test Subscriber")
+	subscriber := Models.NewSubscriber()
 
 	valuePolled := subscriber.Poll(TOPIC)
 
@@ -18,7 +18,7 @@ func TestPollingForAnNonExistingTopic_ShouldReturnNull(t *testing.T) {
 
 func TestPollingForAnExistingTopicWithEmptyMessages_ShouldReturnNull(t *testing.T) {
 	const TOPIC = "TestTopic"
-	subscriber := Models.NewSubscriber("Test Subscriber")
+	subscriber := Models.NewSubscriber()
 
 	subscriber.Subscriptions[TOPIC] = make(chan *Models.Message)
 
@@ -33,7 +33,7 @@ func TestPollingForAnExistingTopicWithEmptyMessages_ShouldReturnNull(t *testing.
 func TestPollingForAnExistingTopicWithMessages_ShouldNotReturnNull(t *testing.T) {
 
 	const TOPIC = "TestTopic"
-	subscriber := Models.NewSubscriber("Test Subscriber")
+	subscriber := Models.NewSubscriber()
 
 	subscriber.Subscriptions[TOPIC] = make(chan *Models.Message)
 	go func() { subscriber.Subscriptions[TOPIC] <- &Models.Message{Message: "Das ist ein lied Von Klaus Hoffman", PublishedAt: time.Now().Format(time.RFC850)} }()
@@ -50,7 +50,7 @@ func TestPollingForAnExistingTopicWithMessages_ShouldNotReturnNull(t *testing.T)
 func TestPollingForAnExistingTopicUntilNoMoreMessagesAreLeft_ShouldReturnNull(t *testing.T) {
 
 	const TOPIC = "TestTopic"
-	subscriber := Models.NewSubscriber("Test Subscriber")
+	subscriber := Models.NewSubscriber()
 
 	subscriber.Subscriptions[TOPIC] = make(chan *Models.Message)
 	go func() { subscriber.Subscriptions[TOPIC] <- &Models.Message{Message: "I can haz cheezburguer", PublishedAt: time.Now().Format(time.RFC850)} }()

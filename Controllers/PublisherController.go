@@ -27,7 +27,6 @@ func DefineRoutes() *mux.Router{
 	r.HandleFunc("/api/{topic}/{subscriber}", RemoveSubscriber).Methods(DELETE)
 	r.HandleFunc("/api/{topic}/{subscriber}", Receive).Methods(GET)
 
-
 	return r
 }
 
@@ -59,7 +58,7 @@ func Subscribe(response http.ResponseWriter, request *http.Request){
 	topic, name := Utils.GetTopicAndSubscriber(request)
 
 	if (Subscribers[name] == nil) {
-		Subscribers[name] = Models.NewSubscriber(name)
+		Subscribers[name] = Models.NewSubscriber()
 	}
 
 	if (Subscribers[name].HasSubscription(topic)) {

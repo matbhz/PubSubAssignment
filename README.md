@@ -65,9 +65,8 @@ Returns `404` if all messages have been read or if the `:subscriber` is not subs
 ```
 #!json
 {
-   "message" : "Luke, I am your father"
+   "message" : "Luke, I am your father",
    "publishedAt": "1980-10-29T20:41:31-07:00"
-
 }
 ```
 ## Possible responses
